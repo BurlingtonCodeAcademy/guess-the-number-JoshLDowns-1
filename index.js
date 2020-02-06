@@ -141,11 +141,11 @@ async function start() {
                 if(playerGuess>num) {
                     console.log(`Nope! Try guessing a lower number!\n`);
                     guessCount += 1;
-                    guessInt(num);
+                    guessInt(num);  //recalls function after incorrect answer
                 } else {
                     console.log(`That's a negatory Ghost Rider, try guessing a higher number!\n`)
                     guessCount += 1;
-                    guessInt(num);
+                    guessInt(num);  //recalls function after incorrect answer
                 }
             }
 
