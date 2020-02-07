@@ -1,33 +1,12 @@
-const readline = require('readline');
-const rl = readline.createInterface(process.stdin, process.stdout);
+//importing game functions and images from resources folder
+import { ask, inputSanitizer, isInteger, random } from './resources/usableFunctions.mjs'
+import { title, win } from './resources/ascii_images.mjs'
 
-function ask(questionText) {
-  return new Promise((resolve, reject) => {
-    rl.question(questionText, resolve);
-  });
-}
-
-start();
+start();//starts the game
 
 async function start() {
     //Initializes game with title, game choice, and range choice
-    console.log(`
-        ____  __ __    ___  _____ _____  
-       /    ||  |  |  /  _]/ ___// ___/  
-      |   __||  |  | /  [_(   \\_(   \\_   
-      |  |  ||  |  ||    _]\\__  |\\__  |  
-      |  |_ ||  :  ||   [_ /  \\ |/  \\ |  
-      |     ||     ||     |\\    |\\    |  
-      |___,_| \\__,_||_____| \\___| \\___|  
-                                         
-      __    __  __ __   ____  ______  _____ 
-     |  |__|  ||  |  | /    ||      |/     |
-     |  |  |  ||  |  ||  o  ||      ||  Y  |
-     |  |  |  ||  _  ||     ||_|  |_||__|  |
-     |  '  '  ||  |  ||  _  |  |  |     |__|
-      \\      / |  |  ||  |  |  |  |      __ 
-       \\_/\\_/  |__|__||__|__|  |__|     |__|
-                                    `);
+    title()
     console.log(`Hey! Wanna play a guessing game?`);
     let gameChoice = await ask(`Press (1) if you want me to guess a number you think of.\nPress (2) if you want to guess a number I think of.\n`);
     //ensures player enters correct game option
@@ -59,7 +38,7 @@ async function start() {
     //function for playing the computer guessing game
     async function compGame(max) {
         console.log(`Alright, think of a number in our range... and don't cheat!!!\n`);
-        guess(1,max);
+        guess(0,max+1); //passes these numbers so range is inclusive
         //Guessing function that can be called recursively
         async function guess(rMin, rMax) {
             compGuess = Math.floor((rMax+rMin)/2);
@@ -118,23 +97,7 @@ async function start() {
             };
             //determines output based on valid input
             if(playerGuess === num) {
-                console.log(`\n
-                 __ __   ___   __ __       
-                |  |  | /   \\ |  |  |      
-                |  |  ||     ||  |  |      
-                |  ~  ||  O  ||  |  |      
-                |___, ||     ||  :  |      
-                |     ||     ||     |      
-                |____/  \\___/  \\__,_|      
-                                           
-             __    __  ____  ____       __ 
-            |  |__|  ||    ||    \\     |  |
-            |  |  |  | |  | |  _  |    |  |
-            |  |  |  | |  | |  |  |    |__|
-            |  '  '  | |  | |  |  |     __ 
-             \\      /  |  | |  |  |    |  |
-              \\_/\\_/  |____||__|__|    |__|
-                                           `)
+                win();
                 console.log(`\nCongrats! You got it right! You Win!!!!!!\nYou got it in ${guessCount===1?`1 guess!`:`${guessCount} guesses!`}`);
                 playAgain();
             } else {
@@ -151,45 +114,6 @@ async function start() {
 
         }
     };
-}
-
-//sanitizes string and determines valid response
-function inputSanitizer(string, responseType) {
-    //possible valid input arrays
-    let possibleYes = ['y', 'yes', 'yeah', 'yup', 'yar', 'yupper', 'yuppers'];
-    let possibleNo = ['n', 'no', 'nay', 'negatory', 'nope', 'no way'];
-    let possibleHigh = ['h', 'high', 'hi', 'higher'];
-    let possibleLow = ['l', 'low', 'lower', 'lo'];
-
-    //checks type of response the game is looking for, and determines if input is valid for that response
-    if (responseType === 'y_or_n') {
-        if (possibleYes.includes(string.trim().toLowerCase())) {
-            return 'y';
-        } else if (possibleNo.includes(string.trim().toLowerCase())) {
-            return 'n';
-        } else return false;
-    } else if (responseType === 'h_or_l') {
-        if (possibleHigh.includes(string.trim().toLowerCase())) {
-          return 'h';
-        } else if (possibleLow.includes(string.trim().toLowerCase())) {
-          return 'l';
-        } else return false;
-    } else return false; //emergency catch
-}
-
-//determines if input is a valid integer
-function isInteger(numString) {
-    let num = parseFloat(numString);
-    if (num%Math.floor(num)!==0) {
-      return false;
-    } else if (num<0) {
-      return false;
-    } else return num;
-}
-
-//random number generator
-function random(min, max) {
-    return Math.floor(min + (Math.random() * (max - min + 1)));
 }
 
 //play again function, called at end of game
