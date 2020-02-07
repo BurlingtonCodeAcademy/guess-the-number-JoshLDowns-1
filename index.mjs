@@ -6,7 +6,7 @@ start();//starts the game
 
 async function start() {
     //Initializes game with title, game choice, and range choice
-    title()
+    console.log(title);
     console.log(`Hey! Wanna play a guessing game?`);
     let gameChoice = await ask(`Press (1) if you want me to guess a number you think of.\nPress (2) if you want to guess a number I think of.\n`);
     //ensures player enters correct game option
@@ -97,7 +97,7 @@ async function start() {
             };
             //determines output based on valid input
             if(playerGuess === num) {
-                win();
+                console.log(win);
                 console.log(`\nCongrats! You got it right! You Win!!!!!!\nYou got it in ${guessCount===1?`1 guess!`:`${guessCount} guesses!`}`);
                 playAgain();
             } else {
