@@ -33,11 +33,13 @@ export function inputSanitizer(string, responseType) {
 }
 
 //determines if input is a valid integer
-export function isInteger(numString) {
+export function isInteger(numString, max) {
   let num = parseFloat(numString);
   if (num%Math.floor(num)!==0) {
     return false;
   } else if (num<0) {
+    return false;
+  } else if (max && num>max) {
     return false;
   } else return num;
 }

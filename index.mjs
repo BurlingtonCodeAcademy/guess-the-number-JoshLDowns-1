@@ -17,10 +17,10 @@ async function start() {
     let maxRange = await ask(`Awesome! Let's try to guess a number between 1 and ....\n(enter a number, try 100, or even 1000 if you want it to be hard!)\n`);
     
     //ensures valid integer on input
-    maxRange = isInteger(maxRange);
+    maxRange = isInteger(maxRange, false);
     while(maxRange === false) {
         maxRange = await ask(`Please enter a whole, positive integer...\n`);
-        maxRange = isInteger(maxRange);
+        maxRange = isInteger(maxRange, false);
     }
     console.log(`Awesome! We are guessing a number between 1 and ${maxRange}!\n\nLet's Play Guess What!!!\n`);
     
@@ -90,10 +90,10 @@ async function start() {
         async function guessInt(num) {
             //ensures player input is a valid integer
             playerGuess = await ask(`Please guess a number between 1 and ${max}...\n`);
-            playerGuess = isInteger(playerGuess);
+            playerGuess = isInteger(playerGuess, max);
             while (playerGuess === false) {
                 playerGuess = await ask(`Please enter a whole, positive integer between 1 and ${max}...\n`);
-                playerGuess = isInteger(playerGuess);
+                playerGuess = isInteger(playerGuess, max);
             };
             //determines output based on valid input
             if(playerGuess === num) {
